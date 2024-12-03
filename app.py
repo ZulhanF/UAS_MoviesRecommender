@@ -6,7 +6,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 def preprocess_data(df):
-
     def clean_text(text):
         if pd.isna(text):
             return ''
@@ -16,19 +15,12 @@ def preprocess_data(df):
     df['Title'] = df['Title'].apply(clean_text)
     df['Overview'] = df['Overview'].apply(clean_text)
     df['Genre'] = df['Genre'].apply(clean_text)
-    
-
     df['Kombinasi'] = df['Title'] + ' ' + df['Overview'] + ' ' + df['Genre']
-    
-
     df = df[df['Kombinasi'].str.strip() != '']
-    
-
     df = df.reset_index(drop=True)
     
     return df
 
-# Fungsi load data dan proses dengan error handling
 @st.cache_data
 def load_data():
     try:
@@ -63,15 +55,9 @@ def rekomendasi_film(judul, df, tfidf_matrix, top_n=10):
             st.warning("Tidak ada film yang ditemukan. Coba judul lain.")
             return None
         
-
         idx = film_cocok.index[0]
-        
-
         similarity_scores = cosine_similarity(tfidf_matrix[idx], tfidf_matrix).flatten()
-        
-
         similar_indices = similarity_scores.argsort()[::-1][1:top_n+1]
-        
         rekomendasi = df.iloc[similar_indices]
         return rekomendasi[['Title', 'Overview', 'Poster_Url', 'Release_Date', 'Genre']]
     
@@ -83,10 +69,7 @@ def rekomendasi_film(judul, df, tfidf_matrix, top_n=10):
 st.set_page_config(page_title="Movie Recommender", page_icon="🎬")
 st.title("🎬 Movie Recommendation System")
 
-
 df, tfidf_matrix = load_data()
-
-
 if df is not None and tfidf_matrix is not None:
 
     all_titles = df['Title'].tolist()
