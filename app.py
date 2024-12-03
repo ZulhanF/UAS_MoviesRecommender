@@ -7,7 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # Fungsi load data dan proses
 @st.cache_data
 def load_data():
-    df = pd.read_csv('movies_dataset.csv')
+    df = pd.read_csv('9000plus.csv')
     df['Kombinasi'] = df['Title'] + ' ' + df['Overview'] + ' ' + df['Genre']
     
     vectorizer = TfidfVectorizer(stop_words='english')
@@ -70,8 +70,3 @@ if input_judul:
                 
                 st.markdown("---")
 
-# Requirement dependencies
-# streamlit
-# pandas
-# scikit-learn
-# numpy
